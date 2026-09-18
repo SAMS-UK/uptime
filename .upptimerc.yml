@@ -1,4 +1,3 @@
-# Change these first
 owner: SAMS-UK
 repo: uptime
 
@@ -35,7 +34,9 @@ status-website:
     - title: GitHub
       href: https://github.com/$OWNER/$REPO
 
+secrets:
+  - NOTIFICATION_CUSTOM_WEBHOOK_URL
+
 notifications:
   - provider: msteams
     url: "$NOTIFICATION_CUSTOM_WEBHOOK_URL"
-
