@@ -25,10 +25,10 @@ jobs:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
         run: |
           # 1. Target the absolute tip commit where Upptime just pushed the data changes
-          REAL_SHA=$(git rev-parse HEAD)
+          REAL_SHA="${{ github.event.workflow_run.head_sha }}"
           echo "Analyzing active data commit context: $REAL_SHA"
-
           CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$REAL_SHA" | grep "history/" || true)
+
           
           if [ -z "$CHANGED_FILES" ]; then
             echo "No service history entries were updated in this runtime execution cycle."
