@@ -12,24 +12,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository history at workflow context
+      - name: Checkout repository history
         uses: actions/checkout@v4
         with:
-          # Crucial: Check out the exact commit that executed the Uptime check
-          ref: ${{ github.event.workflow_run.head_sha }}
+          # Fetch the main history tree branch to read the real updates pushed by Upptime
+          ref: ${{ github.event.workflow_run.head_branch }}
           fetch-depth: 5
 
       - name: Process Upptime Status Changes
         id: monitor
         env:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
-          TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
         run: |
-          # 1. Look for history directory file changes matching the specific runtime commit
-          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$TARGET_SHA" | grep "history/" || true)
+          # 1. Target the absolute tip commit where Upptime just pushed the data changes
+          REAL_SHA=$(git rev-parse HEAD)
+          echo "Analyzing active data commit context: $REAL_SHA"
+
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$REAL_SHA" | grep "history/" || true)
           
           if [ -z "$CHANGED_FILES" ]; then
-            echo "No service history entries were updated in this cycle."
+            echo "No service history entries were updated in this runtime execution cycle."
             exit 0
           fi
 
@@ -41,9 +43,9 @@ jobs:
             echo "Analyzing status data for: $SERVICE_NAME ($FILE)"
 
             # Read current status inside the Upptime YAML output
-            if git show "$TARGET_SHA":$FILE | grep -q "status: up"; then
+            if git show "$REAL_SHA":$FILE | grep -q "status: up"; then
               CURRENT_STATUS="up"
-            elif git show "$TARGET_SHA":$FILE | grep -q "status: down"; then
+            elif git show "$REAL_SHA":$FILE | grep -q "status: down"; then
               CURRENT_STATUS="down"
             else
               CURRENT_STATUS="none"
@@ -51,10 +53,10 @@ jobs:
 
             # Read historical baseline status from the prior commit context
             PREVIOUS_STATUS="unknown"
-            if git show "$TARGET_SHA"~1:$FILE > /dev/null 2>&1; then
-              if git show "$TARGET_SHA"~1:$FILE | grep -q "status: down"; then
+            if git show "$REAL_SHA"~1:$FILE > /dev/null 2>&1; then
+              if git show "$REAL_SHA"~1:$FILE | grep -q "status: down"; then
                 PREVIOUS_STATUS="down"
-              elif git show "$TARGET_SHA"~1:$FILE | grep -q "status: up"; then
+              elif git show "$REAL_SHA"~1:$FILE | grep -q "status: up"; then
                 PREVIOUS_STATUS="up"
               fi
             fi
