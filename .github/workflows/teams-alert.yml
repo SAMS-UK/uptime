@@ -23,15 +23,7 @@ jobs:
 
           echo "Current commit: $CURRENT"
 
-          # Get a few recent commit messages so we can find the previous status commit
-          PREVIOUS=$(gh api repos/${{ github.repository }}/commits \
-            -H "Accept: application/vnd.github+json" \
-            --jq '.[].commit.message' | grep -E '🟥|🟩' | sed -n '2p')
-
-          echo "Previous status commit: $PREVIOUS"
-
           current_status="none"
-          previous_status="none"
           service=""
 
           if echo "$CURRENT" | grep -q "🟥"; then
@@ -42,6 +34,14 @@ jobs:
             service=$(echo "$CURRENT" | sed 's/🟩 //' | sed 's/ is up.*//')
           fi
 
+          # Now filter previous commits to the SAME service, skip the current one, take the next match
+          PREVIOUS=$(gh api repos/${{ github.repository }}/commits \
+            -H "Accept: application/vnd.github+json" \
+            --jq '.[].commit.message' | grep -E "🟥 ${service} is down|🟩 ${service} is up" | sed -n '2p')
+
+          echo "Previous status commit for $service: $PREVIOUS"
+
+          previous_status="none"
           if echo "$PREVIOUS" | grep -q "🟥"; then
             previous_status="down"
           elif echo "$PREVIOUS" | grep -q "🟩"; then
