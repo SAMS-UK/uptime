@@ -17,15 +17,15 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
+          # 1. Fetch current commit message
           CURRENT=$(gh api repos/${{ github.repository }}/commits/${{ github.event.workflow_run.head_sha }} \
             --jq '.commit.message' \
             -H "Accept: application/vnd.github+json")
-
           echo "Current commit: $CURRENT"
-
+          
           current_status="none"
           service=""
-
+          
           if echo "$CURRENT" | grep -q "🟥"; then
             current_status="down"
             service=$(echo "$CURRENT" | sed 's/🟥 //' | sed 's/ is down.*//')
@@ -34,20 +34,27 @@ jobs:
             service=$(echo "$CURRENT" | sed 's/🟩 //' | sed 's/ is up.*//')
           fi
 
-          # Now filter previous commits to the SAME service, skip the current one, take the next match
-          PREVIOUS=$(gh api repos/${{ github.repository }}/commits \
-            -H "Accept: application/vnd.github+json" \
-            --jq '.[].commit.message' | grep -E "🟥 ${service} is down|🟩 ${service} is up" | sed -n '2p')
-
-          echo "Previous status commit for $service: $PREVIOUS"
-
           previous_status="none"
-          if echo "$PREVIOUS" | grep -q "🟥"; then
-            previous_status="down"
-          elif echo "$PREVIOUS" | grep -q "🟩"; then
-            previous_status="up"
-          fi
 
+          # Only look for previous history if we actually identified a service
+          if [ -n "$service" ]; then
+            echo "Identified service: $service"
+            
+            # 2. Fetch up to 100 recent commits to give plenty of history depth
+            # Safely passes $service into jq as a variable ($svc) to avoid shell breaking on spaces
+            PREVIOUS=$(gh api "repos/${{ github.repository }}/commits?per_page=100" \
+              -H "Accept: application/vnd.github+json" | \
+              jq -r --arg svc "$service" '.[] | select(.commit.message | contains($svc + " is")) | .commit.message' | sed -n '2p')
+            
+            echo "Previous status commit for $service: $PREVIOUS"
+            
+            if echo "$PREVIOUS" | grep -q "🟥"; then
+              previous_status="down"
+            elif echo "$PREVIOUS" | grep -q "🟩"; then
+              previous_status="up"
+            fi
+          fi
+          
           echo "current_status=$current_status" >> $GITHUB_OUTPUT
           echo "previous_status=$previous_status" >> $GITHUB_OUTPUT
           echo "service=$service" >> $GITHUB_OUTPUT
