@@ -19,6 +19,9 @@ sites:
     url: https://www.ccap.ac.uk/
   - name: CCAP Catalogue
     url: https://www.ccap.ac.uk/catalogue
+  - name: HABCAST
+    url: https://dataservices.sams.ac.uk/habcastApp/
+
 
 status-website:
   # cname: demo.upptime.js.org   
