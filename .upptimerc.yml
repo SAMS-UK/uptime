@@ -22,9 +22,7 @@ sites:
   - name: HABCAST
     url: https://dataservices.sams.ac.uk/habcastApp/
 
-
 status-website:
-  # cname: demo.upptime.js.org   
   publish: true
   baseUrl: /uptime
   logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
@@ -37,6 +35,7 @@ status-website:
     - title: GitHub
       href: https://github.com/$OWNER/$REPO
 
-
-# Upptime also supports notifications, assigning issues, and more
-# See https://upptime.js.org/docs/configuration
+# Add this native notification block below
+notifications:
+  - provider: custom
+    url: "$NOTIFICATION_CUSTOM_WEBHOOK_URL"
