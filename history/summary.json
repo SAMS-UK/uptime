@@ -80,17 +80,17 @@
     "url": "https://ifcb-data.sams.ac.uk/",
     "icon": "https://icons.duckduckgo.com/ip3/ifcb-data.sams.ac.uk.ico",
     "slug": "ifcb-dashboard",
-    "status": "down",
+    "status": "up",
     "uptime": "91.72%",
-    "uptimeDay": "99.98%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
+    "uptimeDay": "99.58%",
+    "uptimeWeek": "99.94%",
+    "uptimeMonth": "99.99%",
     "uptimeYear": "91.43%",
-    "time": 8010,
-    "timeDay": 4759,
-    "timeWeek": 4759,
-    "timeMonth": 4759,
-    "timeYear": 7988,
+    "time": 8003,
+    "timeDay": 5257,
+    "timeWeek": 5257,
+    "timeMonth": 5257,
+    "timeYear": 7980,
     "dailyMinutesDown": {
       "2025-09-23": 203,
       "2025-10-01": 177,
@@ -146,7 +146,7 @@
       "2026-05-31": 90,
       "2026-06-08": 123,
       "2026-06-10": 200,
-      "2026-09-18": 0
+      "2026-09-18": 6
     }
   },
   {
