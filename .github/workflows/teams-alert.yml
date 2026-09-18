@@ -16,8 +16,8 @@ jobs:
         uses: actions/checkout@v4
         with:
           # Fetch the main history tree branch to read the real updates pushed by Upptime
-          ref: ${{ github.event.workflow_run.head_sha }}
-          fetch-depth: 5
+          ref: ${{ github.event.workflow_run.head_branch }}
+          fetch-depth: 20
 
       - name: Process Upptime Status Changes
         id: monitor
@@ -25,57 +25,45 @@ jobs:
           TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
         run: |
           # 1. Target the absolute tip commit where Upptime just pushed the data changes
-
-
           REAL_SHA=$(git log --grep="\[upptime\]" -1 --format=%H)
-          
+
           if [ -z "$REAL_SHA" ]; then
             echo "No recent Upptime data commit found."
             exit 0
           fi
-          
+
           echo "Analyzing latest Upptime data commit: $REAL_SHA"
-          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$REAL_SHA" | grep "history/" || true)
-          
-          
+
+          # Confirm summary.json actually changed in this commit
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$REAL_SHA" | grep "history/summary.json" || true)
           if [ -z "$CHANGED_FILES" ]; then
-            echo "No service history entries were updated in this runtime execution cycle."
+            echo "summary.json was not updated in this commit."
             exit 0
           fi
 
- 
+          # Extract current and previous status maps: slug -> status
+          git show "$REAL_SHA":history/summary.json > current.json
+          git show "$REAL_SHA"~1:history/summary.json > previous.json 2>/dev/null || echo "[]" > previous.json
 
-          # 2. Iterate through every modified service history file to catch down events
-          echo "$CHANGED_FILES" | while read -r FILE; do
-            FILENAME=$(basename "$FILE" .yml)
-            SERVICE_NAME=$(echo "$FILENAME" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
-            
-            echo "Analyzing status data for: $SERVICE_NAME ($FILE)"
+          jq -r '.[] | "\(.slug)|\(.status)"' current.json > current_statuses.txt
+          jq -r '.[] | "\(.slug)|\(.status)"' previous.json > previous_statuses.txt
 
-            # Read current status inside the Upptime YAML output
-            if git show "$REAL_SHA":$FILE | grep -q "status: up"; then
-              CURRENT_STATUS="up"
-            elif git show "$REAL_SHA":$FILE | grep -q "status: down"; then
-              CURRENT_STATUS="down"
-            else
-              CURRENT_STATUS="none"
-            fi
+          echo "--- Current statuses ---"
+          cat current_statuses.txt
+          echo "--- Previous statuses ---"
+          cat previous_statuses.txt
 
-            # Read historical baseline status from the prior commit context
-            PREVIOUS_STATUS="unknown"
-            if git show "$REAL_SHA"~1:$FILE > /dev/null 2>&1; then
-              if git show "$REAL_SHA"~1:$FILE | grep -q "status: down"; then
-                PREVIOUS_STATUS="down"
-              elif git show "$REAL_SHA"~1:$FILE | grep -q "status: up"; then
-                PREVIOUS_STATUS="up"
-              fi
-            fi
+          # Compare line by line for each slug
+          while IFS='|' read -r SLUG CURRENT_STATUS; do
+            PREVIOUS_STATUS=$(grep "^${SLUG}|" previous_statuses.txt | cut -d'|' -f2)
+            [ -z "$PREVIOUS_STATUS" ] && PREVIOUS_STATUS="unknown"
 
-            echo "-> Calculated State Transition: $PREVIOUS_STATUS -> $CURRENT_STATUS"
+            SERVICE_NAME=$(jq -r --arg s "$SLUG" '.[] | select(.slug == $s) | .name' current.json)
 
-            # 3. Fire DOWN alert instantly if the status drops
+            echo "-> $SERVICE_NAME: $PREVIOUS_STATUS -> $CURRENT_STATUS"
+
             if [ "$CURRENT_STATUS" = "down" ] && [ "$PREVIOUS_STATUS" != "down" ]; then
-              echo "🚨 Action Required: Dispatching Down Alert for $SERVICE_NAME..."
+              echo "🚨 Dispatching Down Alert for $SERVICE_NAME..."
               curl -X POST "$TEAMS_WEBHOOK_URL" \
                 -H "Content-Type: application/json" \
                 -d '{
@@ -83,42 +71,22 @@ jobs:
                   "attachments": [{
                     "contentType": "application/vnd.microsoft.card.adaptive",
                     "content": {
-                      "$schema": "http://adaptivecards.io",
+                      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                       "type": "AdaptiveCard",
                       "version": "1.2",
                       "body": [
-                        {
-                          "type": "TextBlock",
-                          "text": "🚨 Service Down",
-                          "weight": "Bolder",
-                          "size": "Large",
-                          "color": "Attention"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "'"$SERVICE_NAME"' is currently unreachable.",
-                          "wrap": true
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "Repo: ${{ github.repository }}",
-                          "isSubtle": true,
-                          "wrap": true
-                        }
+                        {"type": "TextBlock", "text": "🚨 Service Down", "weight": "Bolder", "size": "Large", "color": "Attention"},
+                        {"type": "TextBlock", "text": "'"$SERVICE_NAME"' is currently unreachable.", "wrap": true},
+                        {"type": "TextBlock", "text": "Repo: ${{ github.repository }}", "isSubtle": true, "wrap": true}
                       ],
-                      "actions": [{
-                        "type": "Action.OpenUrl",
-                        "title": "View Status Page",
-                        "url": "https://github.com{{ github.repository }}"
-                      }]
+                      "actions": [{"type": "Action.OpenUrl", "title": "View Status Page", "url": "https://github.com/${{ github.repository }}"}]
                     }
                   }]
                 }'
             fi
 
-            # 4. Fire RECOVERY alert if the service comes back online
             if [ "$CURRENT_STATUS" = "up" ] && [ "$PREVIOUS_STATUS" = "down" ]; then
-              echo "✅ Resolution: Dispatching Recovery Alert for $SERVICE_NAME..."
+              echo "✅ Dispatching Recovery Alert for $SERVICE_NAME..."
               curl -X POST "$TEAMS_WEBHOOK_URL" \
                 -H "Content-Type: application/json" \
                 -d '{
@@ -126,36 +94,17 @@ jobs:
                   "attachments": [{
                     "contentType": "application/vnd.microsoft.card.adaptive",
                     "content": {
-                      "$schema": "http://adaptivecards.io",
+                      "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
                       "type": "AdaptiveCard",
                       "version": "1.2",
                       "body": [
-                        {
-                          "type": "TextBlock",
-                          "text": "✅ Service Recovered",
-                          "weight": "Bolder",
-                          "size": "Large",
-                          "color": "Good"
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "'"$SERVICE_NAME"' is back online.",
-                          "wrap": true
-                        },
-                        {
-                          "type": "TextBlock",
-                          "text": "Repo: ${{ github.repository }}",
-                          "isSubtle": true,
-                          "wrap": true
-                        }
+                        {"type": "TextBlock", "text": "✅ Service Recovered", "weight": "Bolder", "size": "Large", "color": "Good"},
+                        {"type": "TextBlock", "text": "'"$SERVICE_NAME"' is back online.", "wrap": true},
+                        {"type": "TextBlock", "text": "Repo: ${{ github.repository }}", "isSubtle": true, "wrap": true}
                       ],
-                      "actions": [{
-                        "type": "Action.OpenUrl",
-                        "title": "View Status Page",
-                        "url": "https://github.com{{ github.repository }}"
-                      }]
+                      "actions": [{"type": "Action.OpenUrl", "title": "View Status Page", "url": "https://github.com/${{ github.repository }}"}]
                     }
                   }]
                 }'
             fi
-          done
+          done < current_statuses.txt
