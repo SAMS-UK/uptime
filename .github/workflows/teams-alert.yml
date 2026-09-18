@@ -15,132 +15,132 @@ jobs:
       - name: Checkout repository history
         uses: actions/checkout@v4
         with:
-          fetch-depth: 2
+          fetch-depth: 5
 
-      - name: Check Upptime State Transition
-        id: check
+      - name: Process Upptime Status Changes
+        id: monitor
+        env:
+          TEAMS_WEBHOOK_URL: ${{ secrets.TEAMS_WEBHOOK_URL }}
         run: |
-          # 1. Identify which service history file was modified during this run
-          CHANGED_FILE=$(git diff-tree --no-commit-id --name-only -r ${{ github.event.workflow_run.head_sha }} | grep "history/" | head -n 1)
+          # 1. Get a comprehensive list of all history files changed in this specific run commit
+          CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r ${{ github.event.workflow_run.head_sha }} | grep "history/" || true)
           
-          if [ -z "$CHANGED_FILE" ]; then
-            echo "No service history file changed in this workflow execution."
-            echo "current_status=none" >> $GITHUB_OUTPUT
+          if [ -z "$CHANGED_FILES" ]; then
+            echo "No service history entries were updated in this cycle."
             exit 0
           fi
 
-          # Extract cleanly formatted service name from filename (e.g., history/hab-reports.yml -> hab-reports)
-          FILENAME=$(basename "$CHANGED_FILE" .yml)
-          # Convert filename slug to a cleaner presentation title (e.g., hab-reports -> Hab-reports)
-          SERVICE=$(echo "$FILENAME" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
-          echo "Service identified: $SERVICE"
+          # 2. Iterate through every modified service history file to catch down events
+          echo "$CHANGED_FILES" | while read -r FILE; do
+            FILENAME=$(basename "$FILE" .yml)
+            SERVICE_NAME=$(echo "$FILENAME" | sed 's/-/ /g' | awk '{for(i=1;i<=NF;i++)sub(/./,toupper(substr($i,1,1)),$i)}1')
+            
+            echo "Analyzing status data for: $SERVICE_NAME ($FILE)"
 
-          # 2. Check current status logged inside the Upptime tracking data file
-          if git show ${{ github.event.workflow_run.head_sha }}:$CHANGED_FILE | grep -q "status: up"; then
-            current_status="up"
-          elif git show ${{ github.event.workflow_run.head_sha }}:$CHANGED_FILE | grep -q "status: down"; then
-            current_status="down"
-          else
-            current_status="none"
-          fi
-
-          # 3. Check what the status was right BEFORE this commit ran
-          previous_status="unknown"
-          if git show ${{ github.event.workflow_run.head_sha }}~1:$CHANGED_FILE > /dev/null 2>&1; then
-            if git show ${{ github.event.workflow_run.head_sha }}~1:$CHANGED_FILE | grep -q "status: down"; then
-              previous_status="down"
-            elif git show ${{ github.event.workflow_run.head_sha }}~1:$CHANGED_FILE | grep -q "status: up"; then
-              previous_status="up"
+            # Read current status inside the Upptime YAML output
+            if git show ${{ github.event.workflow_run.head_sha }}:$FILE | grep -q "status: up"; then
+              CURRENT_STATUS="up"
+            elif git show ${{ github.event.workflow_run.head_sha }}:$FILE | grep -q "status: down"; then
+              CURRENT_STATUS="down"
+            else
+              CURRENT_STATUS="none"
             fi
-          fi
 
-          echo "Current Status: $current_status"
-          echo "Previous Status: $previous_status"
+            # Read historical baseline status from the prior commit context
+            PREVIOUS_STATUS="unknown"
+            if git show ${{ github.event.workflow_run.head_sha }}~1:$FILE > /dev/null 2>&1; then
+              if git show ${{ github.event.workflow_run.head_sha }}~1:$FILE | grep -q "status: down"; then
+                PREVIOUS_STATUS="down"
+              elif git show ${{ github.event.workflow_run.head_sha }}~1:$FILE | grep -q "status: up"; then
+                PREVIOUS_STATUS="up"
+              fi
+            fi
 
-          echo "current_status=$current_status" >> $GITHUB_OUTPUT
-          echo "previous_status=$previous_status" >> $GITHUB_OUTPUT
-          echo "service=$SERVICE" >> $GITHUB_OUTPUT
+            echo "-> Calculated State Transition: $PREVIOUS_STATUS -> $CURRENT_STATUS"
 
-      - name: Send DOWN alert
-        if: steps.check.outputs.current_status == 'down' && steps.check.outputs.previous_status != 'down'
-        run: |
-          curl -X POST "${{ secrets.TEAMS_WEBHOOK_URL }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "type": "message",
-              "attachments": [{
-                "contentType": "application/vnd.microsoft.card.adaptive",
-                "content": {
-                  "$schema": "http://adaptivecards.io",
-                  "type": "AdaptiveCard",
-                  "version": "1.2",
-                  "body": [
-                    {
-                      "type": "TextBlock",
-                      "text": "🚨 Service Down",
-                      "weight": "Bolder",
-                      "size": "Large",
-                      "color": "Attention"
-                    },
-                    {
-                      "type": "TextBlock",
-                      "text": "${{ steps.check.outputs.service }} is currently unreachable.",
-                      "wrap": true
-                    },
-                    {
-                      "type": "TextBlock",
-                      "text": "Repo: ${{ github.repository }}",
-                      "isSubtle": true,
-                      "wrap": true
+            # 3. Fire DOWN alert instantly if the status drops
+            if [ "$CURRENT_STATUS" = "down" ] && [ "$PREVIOUS_STATUS" != "down" ]; then
+              echo "🚨 Action Required: Dispatching Down Alert for $SERVICE_NAME..."
+              curl -X POST "$TEAMS_WEBHOOK_URL" \
+                -H "Content-Type: application/json" \
+                -d '{
+                  "type": "message",
+                  "attachments": [{
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                      "$schema": "http://adaptivecards.io",
+                      "type": "AdaptiveCard",
+                      "version": "1.2",
+                      "body": [
+                        {
+                          "type": "TextBlock",
+                          "text": "🚨 Service Down",
+                          "weight": "Bolder",
+                          "size": "Large",
+                          "color": "Attention"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "'"$SERVICE_NAME"' is currently unreachable.",
+                          "wrap": true
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "Repo: ${{ github.repository }}",
+                          "isSubtle": true,
+                          "wrap": true
+                        }
+                      ],
+                      "actions": [{
+                        "type": "Action.OpenUrl",
+                        "title": "View Status Page",
+                        "url": "https://github.com{{ github.repository }}"
+                      }]
                     }
-                  ],
-                  "actions": [{
-                    "type": "Action.OpenUrl",
-                    "title": "View Status Page",
-                    "url": "https://github.com/${{ github.repository }}"
                   }]
-                }
-              }]
-            }'
+                }'
+            fi
 
-      - name: Send RECOVERY alert
-        if: steps.check.outputs.current_status == 'up' && steps.check.outputs.previous_status == 'down'
-        run: |
-          curl -X POST "${{ secrets.TEAMS_WEBHOOK_URL }}" \
-            -H "Content-Type: application/json" \
-            -d '{
-              "type": "message",
-              "attachments": [{
-                "contentType": "application/vnd.microsoft.card.adaptive",
-                "content": {
-                  "$schema": "http://adaptivecards.io",
-                  "type": "AdaptiveCard",
-                  "version": "1.2",
-                  "body": [
-                    {
-                      "type": "TextBlock",
-                      "text": "✅ Service Recovered",
-                      "weight": "Bolder",
-                      "size": "Large",
-                      "color": "Good"
-                    },
-                    {
-                      "type": "TextBlock",
-                      "text": "${{ steps.check.outputs.service }} is back online.",
-                      "wrap": true
-                    },
-                    {
-                      "type": "TextBlock",
-                      "text": "Repo: ${{ github.repository }}",
-                      "isSubtle": true,
-                      "wrap": true
+            # 4. Fire RECOVERY alert if the service comes back online
+            if [ "$CURRENT_STATUS" = "up" ] && [ "$PREVIOUS_STATUS" = "down" ]; then
+              echo "✅ Resolution: Dispatching Recovery Alert for $SERVICE_NAME..."
+              curl -X POST "$TEAMS_WEBHOOK_URL" \
+                -H "Content-Type: application/json" \
+                -d '{
+                  "type": "message",
+                  "attachments": [{
+                    "contentType": "application/vnd.microsoft.card.adaptive",
+                    "content": {
+                      "$schema": "http://adaptivecards.io",
+                      "type": "AdaptiveCard",
+                      "version": "1.2",
+                      "body": [
+                        {
+                          "type": "TextBlock",
+                          "text": "✅ Service Recovered",
+                          "weight": "Bolder",
+                          "size": "Large",
+                          "color": "Good"
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "'"$SERVICE_NAME"' is back online.",
+                          "wrap": true
+                        },
+                        {
+                          "type": "TextBlock",
+                          "text": "Repo: ${{ github.repository }}",
+                          "isSubtle": true,
+                          "wrap": true
+                        }
+                      ],
+                      "actions": [{
+                        "type": "Action.OpenUrl",
+                        "title": "View Status Page",
+                        "url": "https://github.com{{ github.repository }}"
+                      }]
                     }
-                  ],
-                  "actions": [{
-                    "type": "Action.OpenUrl",
-                    "title": "View Status Page",
-                    "url": "https://github.com/${{ github.repository }}"
                   }]
-                }
-              }]
-            }'
+                }'
+            fi
+          done
