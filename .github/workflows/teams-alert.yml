@@ -114,7 +114,7 @@ jobs:
                         {"type": "TextBlock", "text": "'"$SERVICE_NAME"' is back online.", "wrap": true},
                         {"type": "TextBlock", "text": "Repo: ${{ github.repository }}", "isSubtle": true, "wrap": true}
                       ],
-                      "actions": [{"type": "Action.OpenUrl", "title": "View Status Page", "url": "https://github.com/${{ github.repository }}"}]
+                      "actions": [{"type": "Action.OpenUrl", "title": "View Status Page", "url": "https://sams-uk.github.io/uptime"}]
                     }
                   }]
                 }'
