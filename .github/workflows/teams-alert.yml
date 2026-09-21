@@ -39,8 +39,8 @@ jobs:
           NOW=$(date +%s)
           AGE=$(( NOW - COMMIT_TIME ))
 
-          if [ "$AGE" -gt 600 ]; then
-            echo "Commit $REAL_SHA is $AGE seconds old (> 10 min) — skipping, likely already processed."
+          if [ "$AGE" -gt 60 ]; then
+            echo "Commit $REAL_SHA is $AGE seconds old (> 1 min) — skipping, likely already processed."
             exit 0
           fi
 
