@@ -34,6 +34,18 @@ jobs:
 
           echo "Analyzing latest Upptime data commit: $REAL_SHA"
 
+          # Only proceed if this commit is newer than 10 minutes old
+          COMMIT_TIME=$(git show -s --format=%ct "$REAL_SHA")
+          NOW=$(date +%s)
+          AGE=$(( NOW - COMMIT_TIME ))
+
+          if [ "$AGE" -gt 600 ]; then
+            echo "Commit $REAL_SHA is $AGE seconds old (> 10 min) — skipping, likely already processed."
+            exit 0
+          fi
+
+          echo "Commit age: ${AGE}s — within window, proceeding."
+
           # Confirm summary.json actually changed in this commit
           CHANGED_FILES=$(git diff-tree --no-commit-id --name-only -r "$REAL_SHA" | grep "history/summary.json" || true)
           if [ -z "$CHANGED_FILES" ]; then
