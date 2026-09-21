@@ -30,7 +30,7 @@
     "icon": "https://icons.duckduckgo.com/ip3/thredds.sams.ac.uk.ico",
     "slug": "thredds",
     "status": "up",
-    "uptime": "98.06%",
+    "uptime": "98.07%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
@@ -80,9 +80,9 @@
     "url": "https://ifcb-data.sams.ac.uk/",
     "icon": "https://icons.duckduckgo.com/ip3/ifcb-data.sams.ac.uk.ico",
     "slug": "ifcb-dashboard",
-    "status": "up",
-    "uptime": "91.77%",
-    "uptimeDay": "100.00%",
+    "status": "down",
+    "uptime": "91.78%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "99.58%",
     "uptimeMonth": "99.90%",
     "uptimeYear": "91.42%",
@@ -146,7 +146,8 @@
       "2026-05-31": 90,
       "2026-06-08": 123,
       "2026-06-10": 200,
-      "2026-09-18": 43
+      "2026-09-18": 43,
+      "2026-09-21": 0
     }
   },
   {
@@ -207,7 +208,7 @@
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
-    "uptimeYear": "99.37%",
+    "uptimeYear": "99.44%",
     "time": 579,
     "timeDay": 572,
     "timeWeek": 629,
