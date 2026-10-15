@@ -4,10 +4,10 @@
     "url": "https://www.habreports.org/",
     "icon": "https://icons.duckduckgo.com/ip3/www.habreports.org.ico",
     "slug": "hab-reports",
-    "status": "up",
+    "status": "down",
     "uptime": "99.97%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.90%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.97%",
     "time": 783,
@@ -20,7 +20,8 @@
       "2025-11-05": 25,
       "2025-11-06": 18,
       "2025-11-14": 14,
-      "2026-03-17": 64
+      "2026-03-17": 64,
+      "2026-10-15": 1
     }
   },
   {
@@ -76,7 +77,7 @@
     "icon": "https://icons.duckduckgo.com/ip3/ifcb-data.sams.ac.uk.ico",
     "slug": "ifcb-dashboard",
     "status": "up",
-    "uptime": "92.25%",
+    "uptime": "92.26%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "99.86%",
@@ -143,10 +144,10 @@
     "url": "https://skatespotter.sams.ac.uk/",
     "icon": "https://icons.duckduckgo.com/ip3/skatespotter.sams.ac.uk.ico",
     "slug": "skate-spotter",
-    "status": "up",
+    "status": "down",
     "uptime": "99.98%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.92%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.98%",
     "time": 572,
@@ -157,7 +158,8 @@
     "dailyMinutesDown": {
       "2025-11-03": 50,
       "2025-11-05": 10,
-      "2025-11-13": 21
+      "2025-11-13": 21,
+      "2026-10-15": 1
     }
   },
   {
@@ -165,10 +167,10 @@
     "url": "https://www.habreports.org/habappusers/info/",
     "icon": "https://icons.duckduckgo.com/ip3/www.habreports.org.ico",
     "slug": "hab-reports-django",
-    "status": "up",
+    "status": "down",
     "uptime": "99.97%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.93%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.98%",
     "time": 382,
@@ -181,7 +183,8 @@
       "2025-11-05": 10,
       "2025-11-10": 29,
       "2025-11-13": 21,
-      "2025-12-16": 22
+      "2025-12-16": 22,
+      "2026-10-15": 1
     }
   },
   {
@@ -189,10 +192,10 @@
     "url": "https://simba.sams-enterprise.com",
     "icon": "https://icons.duckduckgo.com/ip3/simba.sams-enterprise.com.ico",
     "slug": "simba",
-    "status": "up",
+    "status": "down",
     "uptime": "96.24%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.95%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.99%",
     "time": 578,
@@ -203,7 +206,8 @@
     "dailyMinutesDown": {
       "2025-11-03": 48,
       "2025-11-05": 9,
-      "2025-11-13": 20
+      "2025-11-13": 20,
+      "2026-10-15": 1
     }
   },
   {
@@ -211,10 +215,10 @@
     "url": "https://www.ccap.ac.uk/",
     "icon": "https://icons.duckduckgo.com/ip3/www.ccap.ac.uk.ico",
     "slug": "ccap",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
-    "uptimeWeek": "100.00%",
+    "uptimeDay": "99.96%",
+    "uptimeWeek": "99.99%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
     "time": 1106,
@@ -222,16 +226,18 @@
     "timeWeek": 1107,
     "timeMonth": 1223,
     "timeYear": 1106,
-    "dailyMinutesDown": {}
+    "dailyMinutesDown": {
+      "2026-10-15": 1
+    }
   },
   {
     "name": "CCAP Catalogue",
     "url": "https://www.ccap.ac.uk/catalogue",
     "icon": "https://icons.duckduckgo.com/ip3/www.ccap.ac.uk.ico",
     "slug": "ccap-catalogue",
-    "status": "up",
+    "status": "down",
     "uptime": "99.89%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "99.89%",
@@ -243,7 +249,8 @@
     "dailyMinutesDown": {
       "2026-05-04": 101,
       "2026-05-30": 109,
-      "2026-05-31": 88
+      "2026-05-31": 88,
+      "2026-10-15": 0
     }
   },
   {
