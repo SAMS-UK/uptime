@@ -259,17 +259,19 @@
     "url": "https://dataservices.sams.ac.uk/habcastApp/",
     "icon": "https://icons.duckduckgo.com/ip3/dataservices.sams.ac.uk.ico",
     "slug": "habcast",
-    "status": "up",
+    "status": "down",
     "uptime": "100.00%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "100.00%",
     "uptimeMonth": "100.00%",
     "uptimeYear": "100.00%",
-    "time": 3098,
-    "timeDay": 3115,
-    "timeWeek": 3228,
-    "timeMonth": 3098,
-    "timeYear": 3098,
-    "dailyMinutesDown": {}
+    "time": 3030,
+    "timeDay": 1981,
+    "timeWeek": 2930,
+    "timeMonth": 3030,
+    "timeYear": 3030,
+    "dailyMinutesDown": {
+      "2026-10-15": 0
+    }
   }
 ]
