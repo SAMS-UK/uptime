@@ -216,20 +216,20 @@
     "url": "https://www.ccap.ac.uk/",
     "icon": "https://icons.duckduckgo.com/ip3/www.ccap.ac.uk.ico",
     "slug": "ccap",
-    "status": "down",
+    "status": "up",
     "uptime": "99.95%",
-    "uptimeDay": "99.89%",
-    "uptimeWeek": "98.75%",
-    "uptimeMonth": "99.71%",
+    "uptimeDay": "98.27%",
+    "uptimeWeek": "98.52%",
+    "uptimeMonth": "99.66%",
     "uptimeYear": "99.95%",
-    "time": 1095,
-    "timeDay": 822,
-    "timeWeek": 963,
-    "timeMonth": 1175,
-    "timeYear": 1095,
+    "time": 1171,
+    "timeDay": 3684,
+    "timeWeek": 1808,
+    "timeMonth": 1397,
+    "timeYear": 1171,
     "dailyMinutesDown": {
       "2026-10-15": 124,
-      "2026-10-17": 2
+      "2026-10-17": 25
     }
   },
   {
@@ -238,11 +238,11 @@
     "icon": "https://icons.duckduckgo.com/ip3/www.ccap.ac.uk.ico",
     "slug": "ccap-catalogue",
     "status": "down",
-    "uptime": "99.85%",
-    "uptimeDay": "99.98%",
-    "uptimeWeek": "98.77%",
-    "uptimeMonth": "99.72%",
-    "uptimeYear": "99.85%",
+    "uptime": "99.84%",
+    "uptimeDay": "98.33%",
+    "uptimeWeek": "98.53%",
+    "uptimeMonth": "99.66%",
+    "uptimeYear": "99.84%",
     "time": 524,
     "timeDay": 816,
     "timeWeek": 939,
@@ -253,7 +253,7 @@
       "2026-05-30": 109,
       "2026-05-31": 88,
       "2026-10-15": 124,
-      "2026-10-17": 0
+      "2026-10-17": 24
     }
   },
   {
