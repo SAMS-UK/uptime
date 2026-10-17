@@ -194,7 +194,7 @@
     "icon": "https://icons.duckduckgo.com/ip3/simba.sams-enterprise.com.ico",
     "slug": "simba",
     "status": "up",
-    "uptime": "96.23%",
+    "uptime": "96.24%",
     "uptimeDay": "100.00%",
     "uptimeWeek": "98.77%",
     "uptimeMonth": "99.72%",
@@ -259,19 +259,20 @@
     "url": "https://dataservices.sams.ac.uk/habcastApp/",
     "icon": "https://icons.duckduckgo.com/ip3/dataservices.sams.ac.uk.ico",
     "slug": "habcast",
-    "status": "up",
+    "status": "down",
     "uptime": "99.94%",
-    "uptimeDay": "100.00%",
+    "uptimeDay": "99.98%",
     "uptimeWeek": "99.75%",
     "uptimeMonth": "99.94%",
     "uptimeYear": "99.94%",
-    "time": 2978,
-    "timeDay": 3101,
-    "timeWeek": 2732,
-    "timeMonth": 2978,
-    "timeYear": 2978,
+    "time": 2969,
+    "timeDay": 2865,
+    "timeWeek": 2722,
+    "timeMonth": 2969,
+    "timeYear": 2969,
     "dailyMinutesDown": {
-      "2026-10-15": 25
+      "2026-10-15": 25,
+      "2026-10-17": 0
     }
   }
 ]
