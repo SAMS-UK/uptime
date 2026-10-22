@@ -1,7 +1,7 @@
 url: https://dataservices.sams.ac.uk/habcastApp/
-status: up
-code: 200
-responseTime: 3130
-lastUpdated: 2026-10-22T01:06:01.906Z
+status: down
+code: 500
+responseTime: 661
+lastUpdated: 2026-10-22T20:57:14.378Z
 startTime: 2026-09-18T12:07:48.646Z
 generator: Upptime <https://github.com/upptime/upptime>
