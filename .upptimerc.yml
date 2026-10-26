@@ -24,7 +24,8 @@ sites:
 status-website:
   publish: true
   baseUrl: /uptime
-  logoUrl: https://raw.githubusercontent.com/upptime/upptime.js.org/master/static/img/icon.svg
+  logoUrl: https://raw.githubusercontent.com/SAMS-UK/uptime/master/assets/sams-logo-webx2.jpg
+
   name: SAMS uptime status
   introTitle: "**Uptime**"
   introMessage: Live status of endpoints.
