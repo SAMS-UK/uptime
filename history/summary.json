@@ -26,16 +26,16 @@
     "url": "https://thredds.sams.ac.uk/thredds/catalog/catalog.html",
     "icon": "https://icons.duckduckgo.com/ip3/thredds.sams.ac.uk.ico",
     "slug": "thredds",
-    "status": "down",
+    "status": "up",
     "uptime": "97.82%",
-    "uptimeDay": "87.98%",
-    "uptimeWeek": "89.13%",
-    "uptimeMonth": "93.40%",
+    "uptimeDay": "87.39%",
+    "uptimeWeek": "89.04%",
+    "uptimeMonth": "93.38%",
     "uptimeYear": "98.28%",
-    "time": 1026,
-    "timeDay": 733,
-    "timeWeek": 3086,
-    "timeMonth": 1695,
+    "time": 1025,
+    "timeDay": 774,
+    "timeWeek": 2938,
+    "timeMonth": 1674,
     "timeYear": 999,
     "dailyMinutesDown": {
       "2025-11-21": 9,
@@ -67,7 +67,7 @@
       "2026-11-03": 614,
       "2026-11-02": 117,
       "2026-11-05": 192,
-      "2026-11-09": 173
+      "2026-11-09": 182
     }
   },
   {
