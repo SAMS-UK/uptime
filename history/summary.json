@@ -49,19 +49,19 @@
     "url": "https://dataservices.sams.ac.uk/fios-na-mara",
     "icon": "https://icons.duckduckgo.com/ip3/dataservices.sams.ac.uk.ico",
     "slug": "fios-na-mara",
-    "status": "down",
-    "uptime": "96.51%",
-    "uptimeDay": "96.51%",
-    "uptimeWeek": "96.51%",
-    "uptimeMonth": "96.51%",
-    "uptimeYear": "96.51%",
-    "time": 1488,
-    "timeDay": 1488,
-    "timeWeek": 1488,
-    "timeMonth": 1488,
-    "timeYear": 1488,
+    "status": "up",
+    "uptime": "47.32%",
+    "uptimeDay": "47.32%",
+    "uptimeWeek": "47.32%",
+    "uptimeMonth": "47.32%",
+    "uptimeYear": "47.32%",
+    "time": 1646,
+    "timeDay": 1646,
+    "timeWeek": 1646,
+    "timeMonth": 1646,
+    "timeYear": 1646,
     "dailyMinutesDown": {
-      "2026-11-09": 0
+      "2026-11-09": 9
     }
   },
   {
