@@ -30,7 +30,7 @@ status-website:
 
   name: SAMS uptime status
   introTitle: "**Uptime**"
-  introMessage: Live status of endpoints.
+  introMessage: Live status of public facing endpoints.
   navbar:
     - title: Status
       href: /
