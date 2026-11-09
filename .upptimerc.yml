@@ -2,24 +2,26 @@ owner: SAMS-UK
 repo: uptime
 
 sites:
-  - name: HAB Reports
-    url: https://www.habreports.org/
-  - name: Thredds
-    url: https://thredds.sams.ac.uk/thredds/catalog/catalog.html
-  - name: IFCB Dashboard
-    url: https://ifcb-data.sams.ac.uk/
-  - name: SkateSpotter
-    url: https://skatespotter.sams.ac.uk/
-  - name: HAB Reports (Django)
-    url: https://www.habreports.org/habappusers/info/
-  - name: SIMBA
-    url: https://simba.sams-enterprise.com
   - name: CCAP
     url: https://www.ccap.ac.uk/
   - name: CCAP Catalogue
     url: https://www.ccap.ac.uk/catalogue
+  - name: Fios na Mara
+    url: https://dataservices.sams.ac.uk/fios-na-mara
+  - name: HAB Reports
+    url: https://www.habreports.org/
+  - name: HAB Reports (Django)
+    url: https://www.habreports.org/habappusers/info/
   - name: HABCAST
     url: https://dataservices.sams.ac.uk/habcastApp/
+  - name: IFCB Dashboard
+    url: https://ifcb-data.sams.ac.uk/
+  - name: SIMBA
+    url: https://simba.sams-enterprise.com
+  - name: SkateSpotter
+    url: https://skatespotter.sams.ac.uk/
+  - name: Thredds
+    url: https://thredds.sams.ac.uk/thredds/catalog/catalog.html
 
 status-website:
   publish: true
