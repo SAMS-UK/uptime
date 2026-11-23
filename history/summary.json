@@ -80,7 +80,7 @@
     "timeDay": 711,
     "timeWeek": 658,
     "timeMonth": 1221,
-    "timeYear": 830,
+    "timeYear": 831,
     "dailyMinutesDown": {
       "2026-03-17": 64,
       "2026-10-15": 125
@@ -112,17 +112,17 @@
     "url": "https://dataservices.sams.ac.uk/habcastApp/",
     "icon": "https://icons.duckduckgo.com/ip3/dataservices.sams.ac.uk.ico",
     "slug": "habcast",
-    "status": "down",
-    "uptime": "92.36%",
-    "uptimeDay": "99.98%",
+    "status": "up",
+    "uptime": "92.33%",
+    "uptimeDay": "98.43%",
     "uptimeWeek": "93.28%",
-    "uptimeMonth": "85.01%",
-    "uptimeYear": "92.36%",
-    "time": 3368,
-    "timeDay": 3152,
-    "timeWeek": 8329,
-    "timeMonth": 4162,
-    "timeYear": 3368,
+    "uptimeMonth": "84.96%",
+    "uptimeYear": "92.33%",
+    "time": 3372,
+    "timeDay": 3429,
+    "timeWeek": 7751,
+    "timeMonth": 4148,
+    "timeYear": 3372,
     "dailyMinutesDown": {
       "2026-10-15": 25,
       "2026-10-23": 542,
@@ -133,7 +133,7 @@
       "2026-11-16": 1440,
       "2026-11-15": 1440,
       "2026-11-14": 1312,
-      "2026-11-23": 0
+      "2026-11-23": 23
     }
   },
   {
@@ -151,7 +151,7 @@
     "timeDay": 3642,
     "timeWeek": 3577,
     "timeMonth": 3795,
-    "timeYear": 7013,
+    "timeYear": 7015,
     "dailyMinutesDown": {
       "2025-11-25": 237,
       "2025-11-30": 16,
@@ -208,7 +208,7 @@
     "timeDay": 610,
     "timeWeek": 467,
     "timeMonth": 565,
-    "timeYear": 576,
+    "timeYear": 577,
     "dailyMinutesDown": {
       "2026-10-15": 124
     }
@@ -228,7 +228,7 @@
     "timeDay": 602,
     "timeWeek": 520,
     "timeMonth": 542,
-    "timeYear": 570,
+    "timeYear": 571,
     "dailyMinutesDown": {
       "2026-10-15": 125
     }
@@ -248,7 +248,7 @@
     "timeDay": 748,
     "timeWeek": 702,
     "timeMonth": 1604,
-    "timeYear": 991,
+    "timeYear": 992,
     "dailyMinutesDown": {
       "2025-11-30": 17,
       "2025-12-16": 74,
