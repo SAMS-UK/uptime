@@ -91,21 +91,21 @@
     "url": "https://www.habreports.org/habappusers/info/",
     "icon": "https://icons.duckduckgo.com/ip3/www.habreports.org.ico",
     "slug": "hab-reports-django",
-    "status": "down",
-    "uptime": "99.96%",
-    "uptimeDay": "99.98%",
-    "uptimeWeek": "100.00%",
-    "uptimeMonth": "100.00%",
+    "status": "up",
+    "uptime": "99.95%",
+    "uptimeDay": "98.28%",
+    "uptimeWeek": "99.75%",
+    "uptimeMonth": "99.94%",
     "uptimeYear": "99.97%",
-    "time": 398,
-    "timeDay": 658,
-    "timeWeek": 495,
+    "time": 399,
+    "timeDay": 608,
+    "timeWeek": 497,
     "timeMonth": 519,
     "timeYear": 397,
     "dailyMinutesDown": {
       "2025-12-16": 22,
       "2026-10-15": 124,
-      "2026-11-24": 0
+      "2026-11-24": 25
     }
   },
   {
